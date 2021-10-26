@@ -1,0 +1,7 @@
+Filled container:
+Container contains 5 elements.
+1: It is Rectangle: x1 = 7, y1 = 8, x2 = 9, y2 = 10, Color = Darkblue. Perimeter = 8
+2: It is Triangle: x1 = 3, y1 = 4, x2 = 5, y2 = 6, x3 = 7, y3 = 5, Color = Purple. Perimeter = 9.1876
+3: It is Circle: x = 5, y = 5, r = 25, Color = Green. Perimeter = 157.08
+4: It is Triangle: x1 = 0, y1 = 0, x2 = 4, y2 = 6, x3 = 7, y3 = 0, Color = Red. Perimeter = 20.9193
+5: It is Rectangle: x1 = 10, y1 = 5, x2 = 25, y2 = 9, Color = Yellow. Perimeter = 38

@@ -1,0 +1,3 @@
+/home/worta/Task/CMakeFiles/rebuild_cache.dir
+/home/worta/Task/CMakeFiles/Task.dir
+/home/worta/Task/CMakeFiles/edit_cache.dir
