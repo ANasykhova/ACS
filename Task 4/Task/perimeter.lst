@@ -1,0 +1,326 @@
+     1                                  ;------------------------------------------------------------------------------
+     2                                  ; perimeter.asm - единица компиляции, вбирающая функции вычисления периметра
+     3                                  ;------------------------------------------------------------------------------
+     4                                  
+     5                                  extern RECTANGLE
+     6                                  extern TRIANGLE
+     7                                  extern CIRCLE
+     8                                  
+     9                                  ;----------------------------------------------
+    10                                  ; Вычисление периметра прямоугольника
+    11                                  ;double Perimeter(rectangle *r) {
+    12                                  ;    return 2.0 * (r->x2 - r->x1 + r->y2 - r->y1);
+    13                                  ;}
+    14                                  ;----------------------------------------------
+    15                                  global PerimeterRectangle
+    16                                  PerimeterRectangle:
+    17                                  section .text
+    18 00000000 55                      push rbp
+    19 00000001 4889E5                  mov rbp, rsp
+    20                                  
+    21                                      ; В rdi адрес прямоугольника
+    22 00000004 8B4708                      mov     eax, [rdi+8]
+    23 00000007 03470C                      add     eax, [rdi+12]
+    24                                      
+    25 0000000A 8B1F                        mov ebx, [rdi]
+    26 0000000C 035F04                      add ebx, [rdi+4]
+    27                                      
+    28 0000000F 39D8                        cmp eax, ebx
+    29 00000011 7C06                        jl .abs
+    30                                      
+    31 00000013 29D8                        sub     eax, ebx
+    32 00000015 F20F2AC0                    cvtsi2sd        xmm0, eax
+    33                                      
+    34                                  .abs:
+    35 00000019 8B4708                      mov     eax, [rdi+8]
+    36 0000001C 03470C                      add     eax, [rdi+12]
+    37 0000001F 8B1F                        mov ebx, [rdi]
+    38 00000021 035F04                      add ebx, [rdi+4]
+    39 00000024 29C3                        sub ebx, eax
+    40 00000026 F20F2AC3                    cvtsi2sd xmm0, ebx
+    41                                  
+    42 0000002A C9                      leave
+    43 0000002B C3                      ret
+    44                                  
+    45                                  ;----------------------------------------------
+    46                                  ; double Perimeter(void *t) {
+    47                                  ;     double a = sqrt((*((int*)(t+2*intSize)) - *((int*)t)) * (*((int*)(t+2*intSize)) - *((int*)t)) + 
+    48                                  ;     (*((int*)(t+3*intSize)) - *((int*)(t+intSize))) * (*((int*)(t+3*intSize)) - *((int*)(t+intSize))));
+    49                                  ;     double b = sqrt((*((int*)(t+4*intSize)) - *((int*)t)) * (*((int*)(t+4*intSize)) - *((int*)t)) + 
+    50                                  ;     (*((int*)(t+5*intSize)) - *((int*)(t+intSize))) * (*((int*)(t+5*intSize)) - *((int*)(t+intSize))));
+    51                                  ;     double c = sqrt((*((int*)(t+4*intSize)) - *((int*)(t+2*intSize))) * (*((int*)(t+4*intSize)) - *((int*)(t+2*intSize))) + 
+    52                                  ;     (*((int*)(t+5*intSize)) - *((int*)(t+3*intSize))) * (*((int*)(t+5*intSize)) - *((int*)(t+3*intSize)));
+    53                                  ;     return double(a + b + c);
+    54                                  ; }
+    55                                  ;----------------------------------------------
+    56                                  global PerimeterTriangle
+    57                                  PerimeterTriangle:
+    58                                  section .text
+    59 0000002C 55                      push rbp
+    60 0000002D 4889E5                  mov rbp, rsp
+    61                                  
+    62                                      ; В rdi адрес треугольника
+    63 00000030 8B07                        mov         eax, [rdi]
+    64 00000032 8B5708                      mov         edx, [rdi+8]
+    65 00000035 29C2                        sub         edx, eax
+    66 00000037 F20F2AC2                    cvtsi2sd    xmm0, edx
+    67 0000003B F20F59C0                    mulsd       xmm0, xmm0  
+    68 0000003F 8B4704                      mov         eax, [rdi+4]
+    69 00000042 8B570C                      mov         edx, [rdi+12]
+    70 00000045 29C2                        sub         edx, eax
+    71 00000047 F20F2ADA                    cvtsi2sd    xmm3, edx
+    72 0000004B F20F59DB                    mulsd       xmm3, xmm3  
+    73 0000004F F20F58C3                    addsd         xmm0, xmm3
+    74 00000053 D9FA                        fsqrt
+    75                                      
+    76 00000055 8B07                        mov         eax, [rdi]
+    77 00000057 8B5710                      mov         edx, [rdi+16]
+    78 0000005A 29C2                        sub         edx, eax
+    79 0000005C F20F2ACA                    cvtsi2sd    xmm1, edx
+    80 00000060 F20F59C9                    mulsd       xmm1, xmm1  
+    81 00000064 8B4704                      mov         eax, [rdi+4]
+    82 00000067 8B5714                      mov         edx, [rdi+20]
+    83 0000006A 29C2                        sub         edx, eax
+    84 0000006C F20F2ADA                    cvtsi2sd    xmm3, edx
+    85 00000070 F20F59DB                    mulsd       xmm3, xmm3  
+    86 00000074 F20F58CB                    addsd        xmm1, xmm3
+    87 00000078 D9FA                        fsqrt
+    88                                      
+    89 0000007A 8B4708                      mov         eax, [rdi+8]
+    90 0000007D 8B5710                      mov         edx, [rdi+16]
+    91 00000080 29C2                        sub         edx, eax
+    92 00000082 F20F2AD2                    cvtsi2sd    xmm2, edx
+    93 00000086 F20F59D2                    mulsd       xmm2, xmm2 
+    94 0000008A 8B470C                      mov         eax, [rdi+12]
+    95 0000008D 8B5714                      mov         edx, [rdi+20]
+    96 00000090 29C2                        sub         edx, eax
+    97 00000092 F20F2ADA                    cvtsi2sd    xmm3, edx
+    98 00000096 F20F59DB                    mulsd       xmm3, xmm3  
+    99 0000009A F20F58D3                    addsd         xmm2, xmm3
+   100 0000009E D9FA                        fsqrt
+   101                                      
+   102 000000A0 F20F58C1                    addsd         xmm0, xmm1
+   103 000000A4 F20F58C2                    addsd         xmm0, xmm2
+   104                                  
+   105 000000A8 C9                      leave
+   106 000000A9 C3                      ret
+   107                                  
+   108                                  ;----------------------------------------------
+   109                                  ; double PerimeterCircle(void *c) {
+   110                                  ;     return 2*3.1416*(*(int*)(c+3*intSize));
+   111                                  ;}
+   112                                  ;----------------------------------------------
+   113                                  global PerimeterCircle
+   114                                  PerimeterCircle:
+   115                                  section .data
+   116 00000000 A7E8482EFF211940        numb dq 6.2832
+   117                                  section .text
+   118 000000AA 55                      push rbp
+   119 000000AB 4889E5                  mov rbp, rsp
+   120                                  
+   121                                      ; В rdi адрес круга
+   122 000000AE 8B4708                      mov eax, [rdi+8]
+   123 000000B1 F20F2AC0                    cvtsi2sd    xmm0, eax
+   124 000000B5 F20F100C25-                 movsd xmm1, [numb]
+   124 000000BA [00000000]         
+   125 000000BE F20F59C1                    mulsd xmm0, xmm1
+   126                                      
+   127 000000C2 C9                      leave
+   128 000000C3 C3                      ret
+   129                                  
+   130                                  ;----------------------------------------------
+   131                                  ; Вычисление периметра фигуры
+   132                                  ;double PerimeterShape(void *s) {
+   133                                  ;    int k = *((int*)s);
+   134                                  ;    if(k == RECTANGLE) {
+   135                                  ;        return PerimeterRectangle(s+intSize);
+   136                                  ;    }
+   137                                  ;    else if(k == TRIANGLE) {
+   138                                  ;        return PerimeterTriangle(s+intSize);
+   139                                  ;    }
+   140                                  ;    else if(k == CIRCLE) {
+   141                                  ;        return PerimeterCircle(s+intSize);
+   142                                  ;    }
+   143                                  ;    else {
+   144                                  ;        return 0.0;
+   145                                  ;    }
+   146                                  ;}
+   147                                  ;----------------------------------------------
+   148                                  global PerimeterShape
+   149                                  PerimeterShape:
+   150                                  section .text
+   151 000000C4 55                      push rbp
+   152 000000C5 4889E5                  mov rbp, rsp
+   153                                  
+   154                                      ; В rdi адрес фигуры
+   155 000000C8 8B07                        mov eax, [rdi]
+   156 000000CA 3B0425[00000000]            cmp eax, [RECTANGLE]
+   157 000000D1 741A                        je rectPerimeter
+   158 000000D3 3B0425[00000000]            cmp eax, [TRIANGLE]
+   159 000000DA 741C                        je trianPerimeter
+   160 000000DC 3B0425[00000000]            cmp eax, [CIRCLE]
+   161 000000E3 741E                        je circPerimeter
+   162 000000E5 31C0                        xor eax, eax
+   163 000000E7 F20F2AC0                    cvtsi2sd    xmm0, eax
+   164 000000EB EB21                        jmp     return
+   165                                  rectPerimeter:
+   166                                      ; Вычисление периметра прямоугольника
+   167 000000ED 4883C704                    add     rdi, 4
+   168 000000F1 E80AFFFFFF                  call    PerimeterRectangle
+   169 000000F6 EB16                        jmp     return
+   170                                  trianPerimeter:
+   171                                      ; Вычисление периметра треугольника
+   172 000000F8 4883C704                    add     rdi, 4
+   173 000000FC E82BFFFFFF                  call    PerimeterTriangle
+   174 00000101 EB0B                        jmp     return
+   175                                  circPerimeter:
+   176                                      ; Вычисление периметра круга
+   177 00000103 4883C704                    add     rdi, 4
+   178 00000107 E89EFFFFFF                  call    PerimeterCircle
+   179 0000010C EB00                        jmp     return
+   180                                  return:
+   181 0000010E C9                      leave
+   182 0000010F C3                      ret
+   183                                  
+   184                                  ;----------------------------------------------
+   185                                  ;// Сортировка элементов в контейнере
+   186                                  ;void Container::QuickSort(void *c, int len, int first, int last) {
+   187                                  ;    if (last == -1)
+   188                                  ;        last = len - 1;
+   189                                  ;    Shape *mid, *count;
+   190                                  ;    int f = first, l = last;
+   191                                  ;    mid = cont[(f+l) / 2]; //вычисление опорного элемента
+   192                                  ;    do {
+   193                                  ;        while (cont[f]->Perimeter() < mid->Perimeter()) f++;
+   194                                  ;        while (cont[l]->Perimeter() > mid->Perimeter()) l--;
+   195                                  ;        if (f <= l) { //перестановка элементов
+   196                                  ;            count = cont[f];
+   197                                  ;            cont[f] = cont[l];
+   198                                  ;            cont[l] = count;
+   199                                  ;            f++;
+   200                                  ;            l--;
+   201                                  ;        }
+   202                                  ;    } while (f < l);
+   203                                  ;    if (first < l) QuickSort(first, l);
+   204                                  ;    if (f < last) QuickSort(f, last);
+   205                                  ;}
+   206                                  ;----------------------------------------------
+   207                                  global SortContainer
+   208                                  SortContainer:
+   209                                  section .data
+   210 00000008 1400000000000000            .numb  dq  20
+   211                                  section .bss
+   212 00000000 <res 00000008>              .pcont  resq    1   ; адрес контейнера
+   213 00000008 <res 00000004>              .len    resd    1   ; адрес для сохранения числа введенных элементов
+   214                                  section .text
+   215 00000110 55                      push rbp
+   216 00000111 4889E5                  mov rbp, rsp
+   217                                      
+   218 00000114 48893C25[00000000]          mov [.pcont], rdi     ; сохраняется указатель на контейнер
+   219 0000011C 893425[08000000]            mov [.len],   esi     ; сохраняется число элементов
+   220                                      
+   221                                      ; В rdi адрес начала контейнера
+   222 00000123 4889F3                      mov rbx, rsi            ; число фигур len
+   223 00000126 4989D0                      mov r8, rdx             ; first
+   224 00000129 4989C9                      mov r9, rcx             ; last
+   225                                      
+   226 0000012C 4983F9FF                    cmp r9, -1
+   227 00000130 7F06                        jg .next
+   228                                  
+   229 00000132 4989D9                      mov r9, rbx
+   230 00000135 49FFC9                      dec r9
+   231                                  .next:
+   232 00000138 4D31D2                  	xor r10, r10
+   233 0000013B 4D01C2                  	add r10, r8   ;f
+   234 0000013E 4D31DB                  	xor r11, r11
+   235 00000141 4D01CB                  	add r11, r9   ;l
+   236 00000144 4D31E4                  	xor r12, r12
+   237 00000147 4D01C4                  	add r12, r8
+   238 0000014A 4D01CC                  	add r12, r9
+   239 0000014D 49D1FC                  	sar r12, 1
+   240 00000150 48F72425[08000000]      	mul qword [.numb]
+   241 00000158 4989FD                  	mov r13, rdi
+   242 0000015B 4C01E7                  	add rdi, r12
+   243 0000015E E861FFFFFF              	call PerimeterShape
+   244 00000163 F20F10C8                	movsd xmm1, xmm0
+   245 00000167 4C89EF                  	mov rdi, r13
+   246                                  	.loop:
+   247 0000016A 4D39DA                  	    cmp r10, r11            ; проверка на окончание цикла
+   248 0000016D 0F8DA3000000            	    jge .afterloop            
+   249                                  
+   250                                             .loop2:
+   251 00000173 4D31E4                                  xor r12, r12
+   252 00000176 4D01D4                                  add r12, r10
+   253 00000179 48F72425[08000000]                      mul qword [.numb]
+   254 00000181 4989FD                                  mov r13, rdi
+   255 00000184 4C01E7                  	        add rdi, r12
+   256 00000187 E838FFFFFF              	        call PerimeterShape
+   257 0000018C F20F10D0                	        movsd xmm2, xmm0    ;first perimeter
+   258 00000190 4C89EF                  	        mov rdi, r13
+   259 00000193 0F2FD1                  	        comiss xmm2, xmm1
+   260 00000196 7305                    	        jae .loop3
+   261                                  	        
+   262 00000198 49FFC2                  	        inc r10
+   263 0000019B EBD6                    	        jmp .loop2
+   264                                  	    .loop3:
+   265 0000019D 4D31E4                  	        xor r12, r12
+   266 000001A0 4D01DC                                  add r12, r11
+   267 000001A3 48F72425[08000000]                      mul qword [.numb]
+   268 000001AB 4989FD                                  mov r13, rdi
+   269 000001AE 4C01E7                  	        add rdi, r12
+   270 000001B1 E80EFFFFFF              	        call PerimeterShape
+   271 000001B6 F20F10D8                	        movsd xmm3, xmm0    ;last perimeter
+   272 000001BA 4C89EF                  	        mov rdi, r13
+   273 000001BD 0F2FCB                  	        comiss xmm1, xmm3
+   274 000001C0 7305                    	        jae .next2
+   275                                  	        
+   276 000001C2 49FFCA                  	        dec r10
+   277 000001C5 EBD6                    	        jmp .loop3
+   278                                  	    .next2:
+   279 000001C7 4D39D3                  	        cmp r11, r10
+   280 000001CA 7D02                    	        jge .change
+   281                                  
+   282 000001CC EB9C                    	    jmp .loop
+   283                                  	    
+   284                                  	.change:
+   285 000001CE 4D31E4                  	    xor r12, r12
+   286 000001D1 4D01D4                              add r12, r10
+   287 000001D4 48F72425[08000000]                  mul qword [.numb]
+   288 000001DC 4989FD                              mov r13, rdi
+   289 000001DF 4C01E7                  	    add rdi, r12
+   290 000001E2 4989FC                  	    mov r12, rdi
+   291 000001E5 4C89EF                  	    mov rdi, r13
+   292                                  	    
+   293 000001E8 4D31F6                  	    xor r14, r14
+   294 000001EB 4D01DE                              add r14, r11
+   295 000001EE 48F72425[08000000]                  mul qword [.numb]
+   296 000001F6 4989FD                              mov r13, rdi
+   297 000001F9 4C01F7                  	    add rdi, r14
+   298 000001FC 4989FE                  	    mov r14, rdi
+   299 000001FF 4C89EF                  	    mov rdi, r13
+   300                                  	    
+   301 00000202 4D89E5                  	    mov r13, r12
+   302 00000205 4D89F4                  	    mov r12, r14
+   303 00000208 4D89EE                  	    mov r14, r13
+   304 0000020B 49FFC2                  	    inc r10
+   305 0000020E 49FFCB                  	    dec r11
+   306 00000211 E954FFFFFF              	    jmp .loop
+   307                                  	.afterloop:
+   308 00000216 4D39D8                  	    cmp r8, r11
+   309 00000219 7C07                    	    jl .qsort1
+   310                                  	    
+   311 0000021B 4D39CA                  	    cmp r10, r9
+   312 0000021E 7C0A                    	    jl .qsort2
+   313                                  	    
+   314 00000220 EB10                    	    jmp .end
+   315                                  	    
+   316                                  	.qsort1:
+   317 00000222 4D89D9                  	    mov r9, r11
+   318 00000225 E90EFFFFFF              	    jmp .next
+   319                                  	.qsort2:
+   320 0000022A 4D89D0                  	    mov r8, r10
+   321 0000022D E906FFFFFF              	    jmp .next
+   322                                  
+   323                                  .end:
+   324 00000232 C9                      leave
+   325 00000233 C3                      ret

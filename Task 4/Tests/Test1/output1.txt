@@ -1,0 +1,27 @@
+Filled container:
+Container contains 25 elements.
+0: It is Triangle: x1 = 19, y1 = 2, x2 = 18, y2 = 18, x3 = 11 , y3 = 15, Color = Orange. Perimeter = 38.91133017021905
+1: It is Circle: x = 27, y = 29, r = 9, Color = Purple. Perimeter = 56.548667764616276
+2: It is Triangle: x1 = 23, y1 = 23, x2 = 11, y2 = 4, x3 = 1 , y3 = 29, Color = Green. Perimeter = 72.20153759189951
+3: It is Triangle: x1 = 12, y1 = 15, x2 = 0, y2 = 6, x3 = 29 , y3 = 14, Color = Red. Perimeter = 62.112604278909046
+4: It is Circle: x = 2, y = 29, r = 17, Color = Green. Perimeter = 106.81415022205297
+5: It is Triangle: x1 = 25, y1 = 25, x2 = 21, y2 = 3, x3 = 12 , y3 = 10, Color = Green. Perimeter = 53.61186726726849
+6: It is Rectangle: x1 = 22, y1 = 19, x2 = 0, y2 = 6, Color = Green. Perimeter = 70.0 
+7: It is Circle: x = 1, y = 20, r = 0, Color = Yellow. Perimeter = 0.0
+8: It is Circle: x = 4, y = 23, r = 30, Color = Orange. Perimeter = 188.49555921538757
+9: It is Triangle: x1 = 22, y1 = 6, x2 = 29, y2 = 0, x3 = 11 , y3 = 13, Color = Green. Perimeter = 44.461552578872706
+10: It is Rectangle: x1 = 28, y1 = 1, x2 = 9, y2 = 7, Color = Green. Perimeter = 50.0 
+11: It is Triangle: x1 = 26, y1 = 21, x2 = 9, y2 = 12, x3 = 23 , y3 = 8, Color = Yellow. Perimeter = 47.13726790435871
+12: It is Circle: x = 8, y = 11, r = 20, Color = Blue. Perimeter = 125.66370614359172
+13: It is Rectangle: x1 = 17, y1 = 6, x2 = 25, y2 = 18, Color = Darkblue. Perimeter = 40.0 
+14: It is Triangle: x1 = 14, y1 = 14, x2 = 4, y2 = 7, x3 = 28 , y3 = 12, Color = Purple. Perimeter = 50.86399258372718
+15: It is Triangle: x1 = 17, y1 = 4, x2 = 18, y2 = 3, x3 = 24 , y3 = 21, Color = Yellow. Perimeter = 38.7726558342336
+16: It is Triangle: x1 = 1, y1 = 29, x2 = 26, y2 = 19, x3 = 23 , y3 = 18, Color = Yellow. Perimeter = 54.68484944833859
+17: It is Rectangle: x1 = 21, y1 = 22, x2 = 14, y2 = 23, Color = Purple. Perimeter = 16.0 
+18: It is Triangle: x1 = 19, y1 = 6, x2 = 29, y2 = 18, x3 = 2 , y3 = 7, Color = Orange. Perimeter = 61.80464519196621
+19: It is Rectangle: x1 = 1, y1 = 30, x2 = 7, y2 = 14, Color = Orange. Perimeter = 44.0 
+20: It is Triangle: x1 = 29, y1 = 3, x2 = 7, y2 = 5, x3 = 1 , y3 = 27, Color = Blue. Perimeter = 81.77240836552883
+21: It is Triangle: x1 = 9, y1 = 21, x2 = 27, y2 = 24, x3 = 29 , y3 = 12, Color = Darkblue. Perimeter = 52.3455248509524
+22: It is Circle: x = 27, y = 8, r = 20, Color = Yellow. Perimeter = 125.66370614359172
+23: It is Triangle: x1 = 15, y1 = 7, x2 = 22, y2 = 4, x3 = 27 , y3 = 22, Color = Purple. Perimeter = 45.50668751043186
+24: It is Circle: x = 1, y = 10, r = 22, Color = Purple. Perimeter = 138.23007675795088
